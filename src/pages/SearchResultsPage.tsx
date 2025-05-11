@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import InputTig from "@/components/InputTig";
-import { ImageIcon } from "lucide-react";
+
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 // Category options
 const categories = [
@@ -141,6 +142,7 @@ const categories = [
 const SearchResultsPage = () => {
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>("All Spaces");
+  const [showMap, setShowMap] = useState<boolean>(false);
 
   // Mock data for search results
   const searchResults = Array(15)
@@ -174,7 +176,7 @@ const SearchResultsPage = () => {
               onClick={() => handleCategoryClick(category.name)}
               className={`flex flex-col justify-center self-center items-center gap-[9px]  min-w-[80px] ${
                 activeCategory === category.name
-                  ? "text-theme-gray-100 font-Inter text-xs/normal font-medium not-italic pb-1 border-b-2 border-red-600"
+                  ? "text-theme-gray-100 font-Inter text-xs/normal font-medium not-italic pb-1 border-b-2 border-[#FDC64C]"
                   : "text-theme-gray-101 font-Inter text-xs/normal font-normal not-italic"
               }`}
             >
@@ -187,53 +189,69 @@ const SearchResultsPage = () => {
         </div>
       </div>
       {/* Main Content */}
-      <main className=" flex  items-start w-full mx-auto px-6 py-8">
-        <div className="flex items-start gap-2">
+      <main className=" flex  items-start max-w-full mx-auto px-6 py-8">
+        <div className="">
           {/* Left Sidebar - Uploaded Image */}
-          <div className="flex flex-col items-start gap-5 self-stretch">
-            <h2 className="text-black font-Manrope text-lg/normal font-medium not-italic">Your Upload</h2>
-            <div className="">
-              <img
-                src="https://s3-alpha-sig.figma.com/img/e273/5c11/0224d043d9444c2632e881ce364aa3f4?Expires=1745193600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Bkx35xy1e7ZY61kRePeVMdg8KkvyZU6X9N7FyfCDeESUzfogUv1ymOdRp~RvfVQkGTQbdg5Ze2jOkW10m6oGJ9~S5loKc55kmGxLqTK5t23W~VxYsplvhOLkQXkbBs23r5Hr6t5Vt4xowOc5l46v~8LhhzEYtn7AWlPhKI6JKCkqpT4fh~~Bafu1BTc6K6Boi~BgB4CTtbHFNaCOwTlgTAO0nw-KadlkPWk0zr8t32kIk61g4zttRP5X5QiARYBG9FJTyVSXrNiWRor~1z4KsLDK5~R-fl0NwtjDZpiJytCYQ5Bm6wrd0L2ea5Jx-7-dpWhnV8Ymf04HWrPVgXLWkg__"
-                alt="Uploaded"
-                className="w-[188.38px]  h-[161px]"
-              />
-            </div>
-            {/* <Link
-              to="/image-search"
-              className="block w-full bg-red-600 hover:bg-red-700 text-white text-center py-2 px-4 rounded transition duration-300"
-            >
-              New Search
-            </Link> */}
-          </div>
-            <div className="bg-black   w-1 min-h-full"/>
-          {/* Right Content - Search Results */}
-          <div className="flex flex-col items-start border-l-2 border-theme-gray-102 pl-4 gap-5 self-stretch w-full">
-            <h2 className="text-black font-Manrope text-lg/normal font-medium not-italic">Results</h2>
-            <div className="grid grid-cols-6 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {searchResults.map((result) => (
-                <Link
-                  key={result.id}
-                  to="/location-detail"
-                  className=" transition duration-300"
+          <div className="flex flex-col items-start pl-4 gap-5 self-stretch max-w-full">
+            <div className="flex justify-between items-center w-full">
+              <h2 className="text-black font-Manrope text-lg/normal font-medium not-italic">
+                Recommendations
+              </h2>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium">Show Map</span>
+                <button
+                  onClick={() => setShowMap(!showMap)}
+                  className={`w-10 h-5 rounded-full relative transition-colors duration-300 ${
+                    showMap ? "bg-[#FDC64C]" : "bg-gray-200"
+                  }`}
                 >
-                  <div className="relative">
-                    <img
-                      src={result.image}
-                      alt={result.title}
-                      className="w-[188.38px] h-[161px] "
-                    />
-                    <div className="absolute top-2 right-2 bg-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-                      {result.similarity}
+                  <div
+                    className={`w-4 h-4 bg-white rounded-full absolute top-0.5 transition-transform duration-300 shadow ${
+                      showMap ? "left-5" : "left-0.5"
+                    }`}
+                  ></div>
+                </button>
+              </div>
+            </div>
+            <div className="flex gap-6 justify-center items-center flex-row-reverse   ">
+              {showMap && (
+                <div className="flex overflow-hidden p-0 w-[400px] h-[671px]">
+                  <LoadScript googleMapsApiKey="">
+                    <GoogleMap
+                      mapContainerStyle={{ width: "100%", height: "671px" }}
+                      center={{ lat: 0, lng: 0 }}
+                      zoom={2}
+                    >
+                      <Marker position={{ lat: 0, lng: 0 }} />
+                    </GoogleMap>
+                  </LoadScript>
+                </div>
+              )}
+              <div className="grid grid-cols-4 gap-3">
+                {searchResults.map((result) => (
+                  <Link
+                    key={result.id}
+                    to="/location-detail"
+                    className="transition duration-300"
+                  >
+                    <div className="relative">
+                      <img
+                        src={result.image}
+                        alt={result.title}
+                        className="w-full h-[161px] object-cover"
+                      />
+                      <div className="absolute top-2 left-2 bg-white rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                        {result.similarity}
+                      </div>
                     </div>
-                  </div>
-                  <div className="">
-                    <h3 className="  text-sm font-medium text-gray-800">
-                      {result.title}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
+                    <div className="mt-1">
+                      <h3 className="text-sm font-medium text-gray-800">
+                        {result.title}
+                      </h3>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
         </div>

@@ -37,11 +37,13 @@ function NavbarMain() {
     <nav className="relative px-6 z-10 bg-transparent">
         <div className=" mx-auto px-6 pr-1 py-4">
           <div className="flex items-center flex-shrink-0 justify-between">
-          <div className="flex items-center justify-between h-10 bg-black p-2.5 text-white text-xl/normal font-Manrope font-semibold">LOGO</div>
+          <div className="flex items-center justify-between ">
+            <img src="/logo.png" alt="" className='size-[63px] aspect-square' />
+          </div>
           <div className="hidden md:flex space-x-1 text-base/5 not-italic font-Manrope font-normal">
             <Link 
               to="/"
-              className="text-gray-300 hover:text-white transition-colors px-4 py-2 border-l border-gray-300 "
+              className="text-gray-300 hover:text-white data-[active=true]:text-white focus-within:text-white transition-colors px-4 py-2 border-l border-gray-300 "
             >
               Home
             </Link>
@@ -49,7 +51,7 @@ function NavbarMain() {
               to="/image-search"
               className="text-gray-300 hover:text-white transition-colors px-4 py-2 border-l border-gray-300"
             >
-              Image Search
+            Search
             </Link>
             <Link 
               to="/permits"

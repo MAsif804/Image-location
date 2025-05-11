@@ -37,7 +37,9 @@ const Navbar = () => {
     <nav className="px-8 relative z-10 bg-transparent">
     <div className=" mx-auto  pr-1 py-4">
       <div className="flex items-center flex-shrink-0 justify-between">
-        <div className="flex items-center justify-between h-10 bg-black p-2.5 text-white text-xl/normal font-Manrope font-semibold">LOGO</div>
+        <div className="flex items-center justify-between">
+        <img src="/logo-2.png" alt="" className='size-[63px] aspect-square' />
+        </div>
         <div className="hidden md:flex space-x-1 text-base/5 not-italic font-Manrope font-normal">
           <Link 
             to="/"
@@ -47,9 +49,9 @@ const Navbar = () => {
           </Link>
           <Link 
             to="/image-search"
-            className="text-theme-gray-800 hover:text-black hover:font-bold transition-colors px-4 py-2 border-l border-line-gray-200"
+            className="text-theme-gray-800 data-[active=true]:text-black focus-within:text-black hover:text-black hover:font-bold transition-colors px-4 py-2 border-l border-line-gray-200"
           >
-            Image Search
+          Search
           </Link>
           <Link 
             to="/permits"

@@ -86,7 +86,7 @@ const ImageSearchPage = () => {
           {!showUploader && (
             <div className="justify-center items-center mt-8 text-center">
               <button
-                className=" bg-red-600 hover:bg-red-700 text-white font-medium px-5 py-3 rounded-none transition duration-300"
+                className=" bg-[#FDC64C] hover:bg-[#FDC64C]/80 text-black font-semibold gap-[10.36px] py-[14.5px] px-[20.7px]  transition duration-300"
                 onClick={handleSearch}
                 // disabled={!selectedFile}
               >
